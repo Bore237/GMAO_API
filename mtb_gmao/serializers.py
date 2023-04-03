@@ -18,13 +18,14 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model= Person
-        fields = ['nom', 'prenom', 'email', 'phone', 'gps_pos','activite',
-                'contrat', 'imatriculation','siège_social', 'type_societe']
+        fields =  ["id","name", "prenom","date_birth", "email", "phone", "gps_pos",
+                    "nom_societe", "residence", "salaire", "type_contract" ]
 
 class SocieteSerializer(serializers.ModelsSerializer):
     class Meta:
         model = Societe
-        fields = ['nom', 'email', 'phone', 'gps_pos']
+        fields = ["id", "name", "email", "type_societe", "imatriculation",
+                "siege_social", "phone", "gps_pos", "activite", "contrat"]
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:

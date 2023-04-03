@@ -11,10 +11,9 @@ class SioceteAdmin(admin.ModelAdmin):
         ("Sercice Compagny", {"fields": ["activite", "contrat"]}),
     ]
 
+    list_editable = ["name", "email", "type_societe","phone"]
     list_display = ["id", "name", "email", "type_societe", "imatriculation",
-                     "siege_social", "phone", "gps_pos", "activite", "contrat"]
-    list_display = ["id", "name", "email", "type_societe", "imatriculation",
-                     "siege_social", "phone", "gps_pos", "activite", "contrat"]
+                     "siege_social", "phone", "activite", "contrat"]
     
     #list_filter = ["name", "type_societe"]
     search_fields = ["name",  "type_societe"]
@@ -26,13 +25,13 @@ class PersonAdmin(admin.ModelAdmin):
         ( "Localisation",{"fields": ["residence","phone", "gps_pos"]}),
         ("Company information", {"fields": ["nom_societe", "salaire", "type_contract"]}),
     ]
-    list_editable = ["name", "prenom","date_birth", "email", "phone",
-                     "nom_societe", "residence", "salaire", "type_contract"]
+    list_editable = ["name", "prenom",  "phone","nom_societe", "salaire", "type_contract"]
     list_display = ["id","name", "prenom","date_birth", "email", "phone",
                      "nom_societe", "residence", "salaire", "type_contract" ]
     
     #list_filter = ["name", "nom_societe"]
     search_fields = ["name", "prenom"]
+
 
 #Register the information on the database
 admin.site.register(Societe, SioceteAdmin)  
