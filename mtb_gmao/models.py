@@ -11,7 +11,7 @@ class basicInfo(models.Model):
 
 class CommonInfoPers(basicInfo):
     email = models.EmailField(max_length=30)
-    phone = models.IntegerField()
+    phone = models.CharField(max_length=20)
     gps_pos = models.URLField()
 
     class Meta:
@@ -19,10 +19,11 @@ class CommonInfoPers(basicInfo):
 
 
 class Societe(CommonInfoPers):
+    name   = models.CharField(max_length=80, unique= True)
     activite = models.TextField()
     contrat = models.TextField(help_text="decripe the accord with the company")
-    imatriculation = models.CharField(max_length=100)
-    siège_social = models.CharField(max_length=50)
+    imatriculation = models.CharField(max_length=100, unique=True)
+    siege_social = models.CharField(max_length=50)
     TYPE_SOCIETES = (
         ('fournisseur', 'Fournisseur'),
         ('prestataire', 'Prestataire'),
@@ -37,17 +38,16 @@ class Societe(CommonInfoPers):
 
 
     def __str__(self):
-        return '%s %s' % (self.type_societe, self.name)    
+        return '%s' ': ' '%s' % (self.name, self.type_societe) 
 
 
 class Person(CommonInfoPers):
-    prenom_person = models.CharField(max_length= 80)
+    prenom = models.CharField(max_length= 80)
     fonction_person = models.CharField(max_length=100)
     salaire  = models.FloatField()
-    residance = models.URLField()
+    residence = models.CharField(max_length= 80)
     date_birth = models.DateField(auto_now_add=False)
     nom_societe = models.ForeignKey(Societe, on_delete= models.CASCADE,
-                                    limit_choices_to={'is_staff': True},
                                     related_name="societes",
                                     related_query_name="societe",)
     TYPE_CONTRAT = (
@@ -55,20 +55,20 @@ class Person(CommonInfoPers):
         ('cdi', 'CDI'),
         ('partiel', 'INTERIME'),
     )
-    type_persons = models.CharField(max_length=8, choices= TYPE_CONTRAT,
+    type_contract = models.CharField(max_length=8, choices= TYPE_CONTRAT,
                                   help_text="choose type of contrat")
 
     class Meta:
-        ordering = ['type_persons', 'name']
+        ordering = ['type_contract', 'name']
         verbose_name_plural = "persons"
 
     def __str__(self):
-        return '%s %s' % (self.name, self.prenom_person)
+        return '%s %s' % (self.name, self.prenom)
 
     @property
     def full_name(self):
         "Returns the person's full name."
-        return '%s %s' % (self.name, self.prenom_person)
+        return '%s %s' % (self.name, self.prenom)
     
 
 class basicInfoMat(basicInfo):
