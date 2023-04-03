@@ -14,7 +14,7 @@ class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model= Person
         fields = ['nom', 'prenom', 'email', 'phone', 'gps_pos','activite',
-                   'contrat', 'imatriculation','siège_social', 'type_societe']       (']
+                'contrat', 'imatriculation','siège_social', 'type_societe']
 
 class SocieteSerializer(serializers.ModelsSerializer):
     class Meta:

@@ -32,7 +32,7 @@ class Societe(CommonInfoPers):
                                   help_text="choose if your are personne or company")
 
     class Meta:
-        ordering = ['type_societe', 'nom']
+        ordering = ['type_societe', 'name']
         verbose_name_plural = "societes"
 
 
@@ -59,7 +59,7 @@ class Person(CommonInfoPers):
                                   help_text="choose type of contrat")
 
     class Meta:
-        ordering = ['type_persons', 'nom_person']
+        ordering = ['type_persons', 'name']
         verbose_name_plural = "persons"
 
     def __str__(self):
@@ -72,10 +72,8 @@ class Person(CommonInfoPers):
     
 
 class basicInfoMat(basicInfo):
-    price   =  models.IntegerField(MinValueValidator = 0, null=False) 
-    person = models.ForeignKey(Person, on_delete=models.CASCADE,
-                                related_name="persons",
-                                related_query_name="person")
+    price   =  models.IntegerField(null=False) 
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     
     class Meta:
         abstract = True
@@ -83,8 +81,8 @@ class basicInfoMat(basicInfo):
 
 class CommonInfoMat(basicInfoMat):
     model   =  models.CharField(max_length=100)
-    add_qte =  models.IntegerField(MinValueValidator = 0, null=False)
-    sub_qte =  models.IntegerField(MinValueValidator = 0, null=False)
+    add_qte =  models.IntegerField(null=False)
+    sub_qte =  models.IntegerField(null=False)
 
     class Meta:
         abstract = True
@@ -93,8 +91,7 @@ class CommonInfoMat(basicInfoMat):
 class Machine(CommonInfoMat):
     serial_number = models.CharField(max_length=100)
     garantie = models.DurationField()
-    prev_oper_time = models.IntegerField(MinValueValidator= 0, 
-                                        help_text="Previous Time of operation in mouth")
+    prev_oper_time = models.IntegerField(help_text="Previous Time of operation in mouth")
     dat_on_oper = models.DateField(auto_now_add=True)
     dat_off_oper = models.DateField(auto_now_add=False)
 
@@ -117,17 +114,13 @@ class Operation(basicInfoMat):
         ('maitenance', 'Maintenance'),
         ('traitement', 'Traitement'),
     )
-    type_operation = models.CharField(max_length=12, choises = TYPES_OPERATION)
+    type_operation = models.CharField(max_length=12, choices = TYPES_OPERATION)
     state_machine =  models.BooleanField(blank =True, default=True)
     task_describe = models.TextField()
     dat_on_oper = models.DateTimeField()
     dat_off_oper = models.DateTimeField()
-    dat_next_oper = models.DataTimeField()
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE,
-                                related_name="stocs",
-                                related_query_name="stock")
-    machine = models.ForeignKey(Machine, on_delete=models.CASCADE,
-                                related_name="machines",
-                                related_query_name="machine")
+    dat_next_oper = models.DateTimeField()
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
 
 
