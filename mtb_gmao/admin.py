@@ -4,16 +4,21 @@ from django.contrib import admin
 
 from .models import Person, Societe, Stock, Operation, Machine
 
-
 class SioceteAdmin(admin.ModelAdmin):
     fieldsets = [
         ("Personnal Information", {"fields": ["name", "email", "type_societe", "imatriculation"]}),
         ("Localisation",{"fields": ["siege_social", "phone", "gps_pos"]}),
         ("Sercice Compagny", {"fields": ["activite", "contrat"]}),
     ]
-    list_display = ["name", "email", "type_societe", "imatriculation",
+
+    list_display = ["id", "name", "email", "type_societe", "imatriculation",
                      "siege_social", "phone", "gps_pos", "activite", "contrat"]
-    list_filter = ["name", "type_societe"]
+    list_display = ["id", "name", "email", "type_societe", "imatriculation",
+                     "siege_social", "phone", "gps_pos", "activite", "contrat"]
+    
+    #list_filter = ["name", "type_societe"]
+    search_fields = ["name",  "type_societe"]
+
 
 class PersonAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -21,10 +26,15 @@ class PersonAdmin(admin.ModelAdmin):
         ( "Localisation",{"fields": ["residence","phone", "gps_pos"]}),
         ("Company information", {"fields": ["nom_societe", "salaire", "type_contract"]}),
     ]
-    list_display = ["name", "prenom","date_birth", "email", "phone",
+    list_editable = ["name", "prenom","date_birth", "email", "phone",
+                     "nom_societe", "residence", "salaire", "type_contract"]
+    list_display = ["id","name", "prenom","date_birth", "email", "phone",
                      "nom_societe", "residence", "salaire", "type_contract" ]
-    list_filter = ["name", "nom_societe"]
+    
+    #list_filter = ["name", "nom_societe"]
+    search_fields = ["name", "prenom"]
 
+#Register the information on the database
 admin.site.register(Societe, SioceteAdmin)  
 admin.site.register(Person, PersonAdmin)  
 admin.site.register(Stock)  # Use the default options
