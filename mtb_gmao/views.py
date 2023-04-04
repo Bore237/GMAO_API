@@ -41,8 +41,10 @@ class SocieteViewSet(viewsets.ModelViewSet):
     """
     serializer_class = SocieteSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'siege_social', 'type_societe']
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+
+    ordering_fields = ['name', 'type_societe__iexact']
+    search_fields = ['name__iexact', 'siege_social__iexact', 'type_societe__iexact']
 
     state_buton = False
 
