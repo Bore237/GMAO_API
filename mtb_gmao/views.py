@@ -3,9 +3,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
-from django_filters import rest_framework as filters
-# from rest_framework import filters
+from rest_framework import filters
 
 from mtb_gmao.models import Person, Societe, Stock, Machine, Operation
 from mtb_gmao.serializers import UserSerializer, GroupSerializer,\
@@ -33,18 +31,6 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 """
-    Filter models view of api 
-"""
-class SocieteFilter(filters.FilterSet):
-    type_societe = filters.CharFilter(field_name='type_societe', lookup_expr='iexact')
-    residence = filters.CharFilter(field_name='siege_social', lookup_expr='iexact')
-    nom = filters.CharFilter(field_name="name", lookup_expr='iexact')
-
-    class Meta:
-        model = Societe
-        fields = ['name', 'siege_social', 'type_societe']
-
-"""
     viewsset  of model 
 """
 class SocieteViewSet(viewsets.ModelViewSet):
@@ -55,19 +41,19 @@ class SocieteViewSet(viewsets.ModelViewSet):
     """
     serializer_class = SocieteSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = SocieteFilter
-
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['nom', 'residence', 'type_societe']
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'siege_social', 'type_societe']
 
     state_buton = False
 
     def get_queryset(self):
         queryset = Societe.objects.all().order_by('name')
+        name = self.request.GET.get('name')
 
         if(self.state_buton == False):
             queryset = queryset.exclude(type_societe = 'None')
+        if name is not None:
+            queryset = queryset.filter(name=name)
         return queryset
 
 class PersonViewSet(viewsets.ModelViewSet):
@@ -83,7 +69,10 @@ class PersonViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = Person.objects.all().order_by('name')
+        name_company = self.request.GET.get('nom_societe__name')
 
         if(self.state_buton == False):
             queryset = queryset.exclude(type_contract = 'None')
+        if name_company is not None:
+            queryset = queryset.filter(name=name_company)
         return queryset
