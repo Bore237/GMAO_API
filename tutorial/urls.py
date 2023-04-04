@@ -15,8 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework import routers
+from mtb_gmao import views
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet,  basename='user')
+router.register(r'groups', views.GroupViewSet,  basename='group')
+router.register(r'persons', views.PersonViewSet,  basename='person')
+router.register(r'societes', views.SocieteViewSet,  basename='societe')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls'))
 ]

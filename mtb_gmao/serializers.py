@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User, Group
-from models import Person, Societe,\
-                   Machine, Stock, Operation
+from .models import Person, Societe, Machine, Stock, Operation
 from rest_framework import serializers
 
 
@@ -21,23 +20,25 @@ class PersonSerializer(serializers.ModelSerializer):
         fields =  ["id","name", "prenom","date_birth", "email", "phone", "gps_pos",
                     "nom_societe", "residence", "salaire", "type_contract" ]
 
-class SocieteSerializer(serializers.ModelsSerializer):
+class SocieteSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Societe
         fields = ["id", "name", "email", "type_societe", "imatriculation",
-                "siege_social", "phone", "gps_pos", "activite", "contrat"]
+                "siege_social", "phone", "gps_pos", "activite", "contrat",
+                ]
 
 class MachineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Machine
-        fields = ['nom', '', '', '', '']
+        fields = ['id', 'name']
 
 class StockSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stock
-        fields = ['nom', '', '', '', '']
+        fields = ['id', 'name']
 
 class OperationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Operation
-        fields = ['nom', '', '', '', '']
+        fields = ['id', 'name']

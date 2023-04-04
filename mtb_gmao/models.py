@@ -25,9 +25,11 @@ class Societe(CommonInfoPers):
     imatriculation = models.CharField(max_length=100, unique=True)
     siege_social = models.CharField(max_length=50)
     TYPE_SOCIETES = (
+        ('my_societe', 'Societe'),
         ('fournisseur', 'Fournisseur'),
         ('prestataire', 'Prestataire'),
         ('ONG', 'Donnateur'),
+        ('None', 'END_CONTRAT'),
     )
     type_societe = models.CharField(max_length=13, choices=TYPE_SOCIETES,
                                   help_text="choose if your are personne or company")
@@ -54,6 +56,7 @@ class Person(CommonInfoPers):
         ('cdd', 'CDD' ),
         ('cdi', 'CDI'),
         ('partiel', 'INTERIME'),
+        ('None', 'END_CONTRAT'),
     )
     type_contract = models.CharField(max_length=8, choices= TYPE_CONTRAT,
                                   help_text="choose type of contrat")
@@ -122,5 +125,3 @@ class Operation(basicInfoMat):
     dat_next_oper = models.DateTimeField()
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
-
-
